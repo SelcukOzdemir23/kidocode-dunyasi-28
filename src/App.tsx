@@ -6,8 +6,34 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import MainLayout from "@/components/Layout/MainLayout";
 import Login from "@/pages/Login";
-import StudentDashboard from "@/pages/student/Dashboard";
+import Index from "@/pages/Index";
 import NotFound from "./pages/NotFound";
+
+// Admin pages
+import AdminUsers from "@/pages/admin/Users";
+import AdminCourses from "@/pages/admin/Courses";
+import AdminSettings from "@/pages/admin/Settings";
+import AdminReports from "@/pages/admin/Reports";
+
+// Team Leader pages
+import TeamLeaderGroups from "@/pages/team-leader/Groups";
+import TeamLeaderAssignments from "@/pages/team-leader/Assignments";
+import TeamLeaderTeachers from "@/pages/team-leader/Teachers";
+import TeamLeaderPerformance from "@/pages/team-leader/Performance";
+
+// Student pages
+import StudentCourses from "@/pages/student/Courses";
+import StudentAchievements from "@/pages/student/Achievements";
+import StudentLeaderboard from "@/pages/student/Leaderboard";
+import StudentProfile from "@/pages/student/Profile";
+import StudentWhatsApp from "@/pages/student/WhatsApp";
+
+// Teacher pages
+import TeacherStudents from "@/pages/teacher/Students";
+import TeacherCourses from "@/pages/teacher/Courses";
+import TeacherAssignments from "@/pages/teacher/Assignments";
+import TeacherPerformance from "@/pages/teacher/Performance";
+import TeacherProfile from "@/pages/teacher/Profile";
 
 const queryClient = new QueryClient();
 
@@ -31,9 +57,108 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/" element={
               <ProtectedRoute>
-                <StudentDashboard />
+                <Index />
               </ProtectedRoute>
             } />
+            
+            {/* Admin Routes */}
+            <Route path="/admin/users" element={
+              <ProtectedRoute>
+                <AdminUsers />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/courses" element={
+              <ProtectedRoute>
+                <AdminCourses />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings" element={
+              <ProtectedRoute>
+                <AdminSettings />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports" element={
+              <ProtectedRoute>
+                <AdminReports />
+              </ProtectedRoute>
+            } />
+
+            {/* Team Leader Routes */}
+            <Route path="/team-leader/groups" element={
+              <ProtectedRoute>
+                <TeamLeaderGroups />
+              </ProtectedRoute>
+            } />
+            <Route path="/team-leader/assignments" element={
+              <ProtectedRoute>
+                <TeamLeaderAssignments />
+              </ProtectedRoute>
+            } />
+            <Route path="/team-leader/teachers" element={
+              <ProtectedRoute>
+                <TeamLeaderTeachers />
+              </ProtectedRoute>
+            } />
+            <Route path="/team-leader/performance" element={
+              <ProtectedRoute>
+                <TeamLeaderPerformance />
+              </ProtectedRoute>
+            } />
+
+            {/* Student Routes */}
+            <Route path="/student/courses" element={
+              <ProtectedRoute>
+                <StudentCourses />
+              </ProtectedRoute>
+            } />
+            <Route path="/student/achievements" element={
+              <ProtectedRoute>
+                <StudentAchievements />
+              </ProtectedRoute>
+            } />
+            <Route path="/student/leaderboard" element={
+              <ProtectedRoute>
+                <StudentLeaderboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/student/profile" element={
+              <ProtectedRoute>
+                <StudentProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/student/whatsapp" element={
+              <ProtectedRoute>
+                <StudentWhatsApp />
+              </ProtectedRoute>
+            } />
+
+            {/* Teacher Routes */}
+            <Route path="/teacher/students" element={
+              <ProtectedRoute>
+                <TeacherStudents />
+              </ProtectedRoute>
+            } />
+            <Route path="/teacher/courses" element={
+              <ProtectedRoute>
+                <TeacherCourses />
+              </ProtectedRoute>
+            } />
+            <Route path="/teacher/assignments" element={
+              <ProtectedRoute>
+                <TeacherAssignments />
+              </ProtectedRoute>
+            } />
+            <Route path="/teacher/performance" element={
+              <ProtectedRoute>
+                <TeacherPerformance />
+              </ProtectedRoute>
+            } />
+            <Route path="/teacher/profile" element={
+              <ProtectedRoute>
+                <TeacherProfile />
+              </ProtectedRoute>
+            } />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
