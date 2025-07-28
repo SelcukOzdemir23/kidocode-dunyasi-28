@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* KidoCode Dünyası - Çocuk Dostu Eğitim Platformu Tasarım Sistemi
+Tüm renkler HSL formatında tanımlanmıştır.
+*/
+
+@layer base {
+  :root {
+    /* Ana Arkaplan */
+    --background: 240 100% 99%;
+    --foreground: 240 10% 15%;
+
+    /* Kart ve Panel Renkleri */
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 15%;
+
+    /* Popover Renkleri */
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 15%;
+
+    /* Ana Tema Renkleri - Canlı Mor */
+    --primary: 270 95% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 280 100% 70%;
+
+    /* İkincil Renkler - Açık Mavi */
+    --secondary: 200 100% 95%;
+    --secondary-foreground: 240 10% 15%;
+
+    /* Muted Renkler */
+    --muted: 240 20% 96%;
+    --muted-foreground: 240 10% 45%;
+
+    /* Vurgu Renkleri - Turuncu */
+    --accent: 30 100% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Uyarı Renkleri */
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Başarı Renkleri */
+    --success: 140 85% 45%;
+    --success-foreground: 0 0% 100%;
+
+    /* Kenarlık ve Giriş */
+    --border: 240 20% 90%;
+    --input: 240 20% 96%;
+    --ring: 270 95% 60%;
+
+    /* Gradyanlar */
+    --gradient-primary: linear-gradient(135deg, hsl(270 95% 60%), hsl(280 100% 70%));
+    --gradient-secondary: linear-gradient(135deg, hsl(200 100% 70%), hsl(220 100% 80%));
+    --gradient-accent: linear-gradient(135deg, hsl(30 100% 60%), hsl(40 100% 70%));
+    --gradient-hero: linear-gradient(135deg, hsl(270 95% 60%) 0%, hsl(200 100% 70%) 50%, hsl(30 100% 60%) 100%);
+
+    /* Gölgeler */
+    --shadow-primary: 0 10px 30px -10px hsl(270 95% 60% / 0.3);
+    --shadow-card: 0 4px 20px -4px hsl(240 20% 50% / 0.1);
+    --shadow-glow: 0 0 40px hsl(270 95% 60% / 0.2);
+
+    /* Animasyonlar */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Karanlık Tema Ana Arkaplan */
+    --background: 240 15% 8%;
+    --foreground: 240 20% 95%;
+
+    /* Kart ve Panel Renkleri */
+    --card: 240 15% 12%;
+    --card-foreground: 240 20% 95%;
+
+    /* Popover Renkleri */
+    --popover: 240 15% 12%;
+    --popover-foreground: 240 20% 95%;
+
+    /* Ana Tema Renkleri - Parlak Mor */
+    --primary: 270 100% 75%;
+    --primary-foreground: 240 15% 8%;
+    --primary-glow: 280 100% 80%;
+
+    /* İkincil Renkler */
+    --secondary: 240 15% 20%;
+    --secondary-foreground: 240 20% 95%;
+
+    /* Muted Renkler */
+    --muted: 240 15% 16%;
+    --muted-foreground: 240 10% 65%;
+
+    /* Vurgu Renkleri */
+    --accent: 30 100% 65%;
+    --accent-foreground: 240 15% 8%;
+
+    /* Uyarı Renkleri */
+    --destructive: 0 85% 65%;
+    --destructive-foreground: 240 15% 8%;
+
+    /* Başarı Renkleri */
+    --success: 140 85% 55%;
+    --success-foreground: 240 15% 8%;
+
+    /* Kenarlık ve Giriş */
+    --border: 240 15% 20%;
+    --input: 240 15% 16%;
+    --ring: 270 100% 75%;
+
+    /* Karanlık Tema Gradyanları */
+    --gradient-primary: linear-gradient(135deg, hsl(270 100% 75%), hsl(280 100% 80%));
+    --gradient-secondary: linear-gradient(135deg, hsl(200 80% 60%), hsl(220 80% 70%));
+    --gradient-accent: linear-gradient(135deg, hsl(30 100% 65%), hsl(40 100% 75%));
+    --gradient-hero: linear-gradient(135deg, hsl(270 100% 75%) 0%, hsl(200 80% 60%) 50%, hsl(30 100% 65%) 100%);
+
+    /* Karanlık Tema Gölgeleri */
+    --shadow-primary: 0 10px 30px -10px hsl(270 100% 75% / 0.4);
+    --shadow-card: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 0 40px hsl(270 100% 75% / 0.3);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
