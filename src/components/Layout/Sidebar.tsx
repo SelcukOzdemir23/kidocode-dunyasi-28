@@ -57,8 +57,10 @@ const AppSidebar = () => {
         return [
           ...baseItems,
           { title: 'Öğrenci Grupları', url: '/team-leader/groups', icon: Users },
-          { title: 'Kurs Atama', url: '/team-leader/assignments', icon: BookOpen },
+          { title: 'Kurs Yönetimi', url: '/team-leader/courses', icon: BookOpen },
+          { title: 'Öğrenci Yönetimi', url: '/team-leader/students', icon: Users },
           { title: 'Öğretmen Yönetimi', url: '/team-leader/teachers', icon: GraduationCap },
+          { title: 'Ödev Atama', url: '/team-leader/assignments', icon: FileText },
           { title: 'Performans', url: '/team-leader/performance', icon: BarChart3 }
         ];
 

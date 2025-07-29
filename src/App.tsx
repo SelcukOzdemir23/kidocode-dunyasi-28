@@ -17,6 +17,8 @@ import AdminReports from "@/pages/admin/Reports";
 
 // Team Leader pages
 import TeamLeaderGroups from "@/pages/team-leader/Groups";
+import TeamLeaderCourses from "@/pages/team-leader/Courses";
+import TeamLeaderStudents from "@/pages/team-leader/Students";
 import TeamLeaderAssignments from "@/pages/team-leader/Assignments";
 import TeamLeaderTeachers from "@/pages/team-leader/Teachers";
 import TeamLeaderPerformance from "@/pages/team-leader/Performance";
@@ -87,6 +89,16 @@ const App = () => (
             <Route path="/team-leader/groups" element={
               <ProtectedRoute>
                 <TeamLeaderGroups />
+              </ProtectedRoute>
+            } />
+            <Route path="/team-leader/courses" element={
+              <ProtectedRoute>
+                <TeamLeaderCourses />
+              </ProtectedRoute>
+            } />
+            <Route path="/team-leader/students" element={
+              <ProtectedRoute>
+                <TeamLeaderStudents />
               </ProtectedRoute>
             } />
             <Route path="/team-leader/assignments" element={
