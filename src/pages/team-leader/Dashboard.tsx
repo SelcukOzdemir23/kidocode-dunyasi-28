@@ -54,6 +54,15 @@ const TeamLeaderDashboard = () => {
       gradient: 'from-orange-600 to-red-500'
     },
     {
+      title: 'Performans Analizi',
+      description: 'Raporları görüntüle ve analiz et',
+      icon: TrendingUp,
+      value: '%92',
+      label: 'Başarı Oranı',
+      route: '/team-leader/performance',
+      gradient: 'from-pink-600 to-purple-500'
+    },
+    {
       title: 'Ödev Atama',
       description: 'Ödevleri atama ve takip et',
       icon: Target,
@@ -66,9 +75,9 @@ const TeamLeaderDashboard = () => {
 
   const quickStats = [
     { label: 'Bu Hafta Yeni Öğrenci', value: '8', icon: Users, color: 'text-blue-600' },
-    { label: 'Aktif Gruplar', value: '18', icon: UserCheck, color: 'text-green-600' },
-    { label: 'Aktif Kurslar', value: '8', icon: BookOpen, color: 'text-orange-600' },
-    { label: 'Toplam Öğretmen', value: '12', icon: GraduationCap, color: 'text-purple-600' }
+    { label: 'Bekleyen Onay', value: '3', icon: Clock, color: 'text-orange-600' },
+    { label: 'Aktif Kurslar', value: '8', icon: BookOpen, color: 'text-green-600' },
+    { label: 'Bu Ay Mezun', value: '12', icon: Calendar, color: 'text-purple-600' }
   ];
 
   return (
@@ -105,7 +114,7 @@ const TeamLeaderDashboard = () => {
       </div>
 
       {/* Ana Yönetim Kartları */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {summaryCards.map((card, index) => (
           <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
             <div className={`h-2 bg-gradient-to-r ${card.gradient}`} />
