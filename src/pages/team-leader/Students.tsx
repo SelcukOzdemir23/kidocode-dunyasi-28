@@ -16,8 +16,10 @@ interface Student {
   phone: string;
   age: number;
   enrollmentDate: string;
-  courses: string[];
+  groups: string[];
   status: 'active' | 'inactive';
+  parentName: string;
+  address: string;
 }
 
 const TeamLeaderStudents = () => {
@@ -29,8 +31,10 @@ const TeamLeaderStudents = () => {
       phone: '+90 555 111 2233',
       age: 8,
       enrollmentDate: '2024-01-15',
-      courses: ['Python', 'Scratch'],
-      status: 'active'
+      groups: ['TUR_PYT_2024_8-10_001', 'TUR_SCR_2024_8-10_001'],
+      status: 'active',
+      parentName: 'Mehmet Yılmaz',
+      address: 'İstanbul, Kadıköy'
     },
     {
       id: 2,
@@ -39,8 +43,10 @@ const TeamLeaderStudents = () => {
       phone: '+90 555 222 3344',
       age: 10,
       enrollmentDate: '2024-02-01',
-      courses: ['Web Tasarım'],
-      status: 'active'
+      groups: ['TUR_WEB_2024_11-13_001'],
+      status: 'active',
+      parentName: 'Fatma Kaya',
+      address: 'Ankara, Çankaya'
     },
     {
       id: 3,
@@ -49,19 +55,25 @@ const TeamLeaderStudents = () => {
       phone: '+90 555 333 4455',
       age: 9,
       enrollmentDate: '2024-01-20',
-      courses: ['Kodu', 'Robotik'],
-      status: 'inactive'
+      groups: ['TUR_KDU_2024_8-10_001'],
+      status: 'inactive',
+      parentName: 'Ali Demir',
+      address: 'İzmir, Konak'
     },
   ]);
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     age: '',
-    status: 'active' as 'active' | 'inactive'
+    status: 'active' as 'active' | 'inactive',
+    parentName: '',
+    address: ''
   });
 
   const handleAddStudent = () => {
@@ -72,11 +84,13 @@ const TeamLeaderStudents = () => {
       phone: formData.phone,
       age: parseInt(formData.age),
       enrollmentDate: new Date().toISOString().split('T')[0],
-      courses: [],
-      status: formData.status
+      groups: [],
+      status: formData.status,
+      parentName: formData.parentName,
+      address: formData.address
     };
     setStudents([...students, newStudent]);
-    setFormData({ name: '', email: '', phone: '', age: '', status: 'active' });
+    setFormData({ name: '', email: '', phone: '', age: '', status: 'active', parentName: '', address: '' });
     setIsAddDialogOpen(false);
   };
 
@@ -87,7 +101,9 @@ const TeamLeaderStudents = () => {
       email: student.email,
       phone: student.phone,
       age: student.age.toString(),
-      status: student.status
+      status: student.status,
+      parentName: student.parentName,
+      address: student.address
     });
   };
 
@@ -99,7 +115,7 @@ const TeamLeaderStudents = () => {
           : s
       ));
       setEditingStudent(null);
-      setFormData({ name: '', email: '', phone: '', age: '', status: 'active' });
+      setFormData({ name: '', email: '', phone: '', age: '', status: 'active', parentName: '', address: '' });
     }
   };
 
@@ -196,7 +212,7 @@ const TeamLeaderStudents = () => {
                 <TableHead>İletişim</TableHead>
                 <TableHead>Yaş</TableHead>
                 <TableHead>Kayıt Tarihi</TableHead>
-                <TableHead>Kurslar</TableHead>
+                <TableHead>Gruplar</TableHead>
                 <TableHead>Durum</TableHead>
                 <TableHead>İşlemler</TableHead>
               </TableRow>
@@ -204,7 +220,17 @@ const TeamLeaderStudents = () => {
             <TableBody>
               {students.map((student) => (
                 <TableRow key={student.id}>
-                  <TableCell className="font-medium">{student.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <button 
+                      onClick={() => {
+                        setSelectedStudent(student);
+                        setIsDetailDialogOpen(true);
+                      }}
+                      className="text-primary hover:underline"
+                    >
+                      {student.name}
+                    </button>
+                  </TableCell>
                   <TableCell>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 text-sm">
@@ -226,9 +252,9 @@ const TeamLeaderStudents = () => {
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
-                      {student.courses.map((course, index) => (
+                      {student.groups.map((group, index) => (
                         <Badge key={index} variant="outline" className="text-xs">
-                          {course}
+                          {group}
                         </Badge>
                       ))}
                     </div>
