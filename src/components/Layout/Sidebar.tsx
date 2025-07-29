@@ -77,7 +77,7 @@ const AppSidebar = () => {
       case 'teacher':
         return [
           ...baseItems,
-          { title: 'Öğrencilerim', url: '/teacher/students', icon: Users },
+          { title: 'Gruplarım', url: '/teacher/groups', icon: Users },
           { title: 'Kurslarım', url: '/teacher/courses', icon: BookOpen },
           { title: 'Ödevler', url: '/teacher/assignments', icon: FileText },
           { title: 'Performans', url: '/teacher/performance', icon: BarChart3 },

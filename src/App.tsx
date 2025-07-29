@@ -31,7 +31,8 @@ import StudentProfile from "@/pages/student/Profile";
 import StudentWhatsApp from "@/pages/student/WhatsApp";
 
 // Teacher pages
-import TeacherStudents from "@/pages/teacher/Students";
+import TeacherGroups from "@/pages/teacher/Groups";
+import TeacherGroupDetail from "@/pages/teacher/GroupDetail";
 import TeacherCourses from "@/pages/teacher/Courses";
 import TeacherAssignments from "@/pages/teacher/Assignments";
 import TeacherPerformance from "@/pages/teacher/Performance";
@@ -145,9 +146,14 @@ const App = () => (
             } />
 
             {/* Teacher Routes */}
-            <Route path="/teacher/students" element={
+            <Route path="/teacher/groups" element={
               <ProtectedRoute>
-                <TeacherStudents />
+                <TeacherGroups />
+              </ProtectedRoute>
+            } />
+            <Route path="/teacher/groups/:groupId" element={
+              <ProtectedRoute>
+                <TeacherGroupDetail />
               </ProtectedRoute>
             } />
             <Route path="/teacher/courses" element={

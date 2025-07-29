@@ -1,186 +1,358 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { BookOpen, Users, Clock, Edit, Eye, Plus } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BookOpen, Users, Clock, ArrowLeft, Play, FileText, Target } from 'lucide-react';
 
 const TeacherCourses = () => {
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedModule, setSelectedModule] = useState(null);
+  const [selectedLesson, setSelectedLesson] = useState(null);
+
   const courses = [
     {
       id: 1,
-      title: 'Python Programlama',
-      description: 'Sıfırdan Python öğrenme kursu',
-      students: 18,
-      totalLessons: 20,
-      completedLessons: 12,
-      nextLesson: 'Fonksiyonlar ve Parametreler',
+      courseId: 'PY_BASIC_2024_8_10',
+      title: 'Python Programlama Temelleri',
+      description: 'Çocuklar için Python programlama temelleri',
+      ageGroup: '8-10 yaş',
       duration: '8 hafta',
-      difficulty: 'Başlangıç',
-      status: 'active'
+      level: 'Başlangıç',
+      modules: [
+        {
+          id: 1,
+          name: 'Python Giriş',
+          lessons: [
+            { id: 1, name: 'Python Nedir?', activities: ['Giriş Videosu', 'İlk Kod Yazma'], homework: 'Python Kurulumu' },
+            { id: 2, name: 'Değişkenler', activities: ['Değişken Tanımlama', 'Sayı Oyunları'], homework: 'Değişken Örnekleri' }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Temel Kavramlar',
+          lessons: [
+            { id: 3, name: 'Veri Tipleri', activities: ['String Manipülasyonu', 'Sayı İşlemleri'], homework: 'Veri Tipi Örnekleri' },
+            { id: 4, name: 'Koşullar', activities: ['If-Else Yapıları', 'Karar Oyunları'], homework: 'Koşul Problemleri' }
+          ]
+        },
+        {
+          id: 3,
+          name: 'Döngüler',
+          lessons: [
+            { id: 5, name: 'For Döngüleri', activities: ['Tekrar Oyunları', 'Sayma Problemleri'], homework: 'Döngü Örnekleri' },
+            { id: 6, name: 'While Döngüleri', activities: ['Koşullu Tekrarlar', 'Sonsuz Döngüler'], homework: 'While Problemleri' }
+          ]
+        },
+        {
+          id: 4,
+          name: 'Fonksiyonlar',
+          lessons: [
+            { id: 7, name: 'Fonksiyon Tanımlama', activities: ['Basit Fonksiyonlar', 'Parametre Kullanımı'], homework: 'Fonksiyon Yazma' },
+            { id: 8, name: 'Return Değerleri', activities: ['Geri Dönüş Değerleri', 'Hesaplama Fonksiyonları'], homework: 'Hesap Makinesi' }
+          ]
+        }
+      ]
     },
     {
       id: 2,
-      title: 'Web Tasarım Temelleri',
-      description: 'HTML, CSS ve temel JavaScript',
-      students: 12,
-      totalLessons: 25,
-      completedLessons: 8,
-      nextLesson: 'CSS Grid Sistemi',
-      duration: '10 hafta',
-      difficulty: 'Başlangıç',
-      status: 'active'
-    },
-    {
-      id: 3,
+      courseId: 'SCRATCH_GAME_2024_10_12',
       title: 'Scratch ile Oyun Geliştirme',
       description: 'Görsel programlama ile oyun yapımı',
-      students: 15,
-      totalLessons: 15,
-      completedLessons: 15,
-      nextLesson: 'Kurs Tamamlandı',
+      ageGroup: '10-12 yaş',
       duration: '6 hafta',
-      difficulty: 'Orta',
-      status: 'completed'
-    },
+      level: 'Orta',
+      modules: [
+        {
+          id: 1,
+          name: 'Scratch Temelleri',
+          lessons: [
+            { id: 1, name: 'Scratch Arayüzü', activities: ['Arayüz Tanıma', 'İlk Sprite'], homework: 'Sprite Oluşturma' },
+            { id: 2, name: 'Hareket Blokları', activities: ['Sprite Hareketi', 'Yön Kontrolü'], homework: 'Hareket Animasyonu' }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Oyun Mekaniği',
+          lessons: [
+            { id: 3, name: 'Çarpışma Algılama', activities: ['Collision Detection', 'Oyun Kuralları'], homework: 'Basit Top Oyunu' },
+            { id: 4, name: 'Skor Sistemi', activities: ['Değişkenler', 'Skor Gösterimi'], homework: 'Skor Tablosu' }
+          ]
+        }
+      ]
+    }
   ];
 
-  const upcomingLessons = [
-    { course: 'Python Programlama', lesson: 'Fonksiyonlar', date: 'Yarın 14:00', students: 18 },
-    { course: 'Web Tasarım', lesson: 'CSS Grid', date: 'Salı 16:00', students: 12 },
-    { course: 'Python Programlama', lesson: 'Liste Kavramları', date: 'Çarşamba 14:00', students: 18 },
-  ];
+  const handleCourseClick = (course) => {
+    setSelectedCourse(course);
+    setSelectedModule(null);
+    setSelectedLesson(null);
+  };
 
-  return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
+  const handleModuleClick = (module) => {
+    setSelectedModule(module);
+    setSelectedLesson(null);
+  };
+
+  const handleLessonClick = (lesson) => {
+    setSelectedLesson(lesson);
+  };
+
+  const handleBack = () => {
+    if (selectedLesson) {
+      setSelectedLesson(null);
+    } else if (selectedModule) {
+      setSelectedModule(null);
+    } else if (selectedCourse) {
+      setSelectedCourse(null);
+    }
+  };
+
+  // Ana kurs listesi görünümü
+  if (!selectedCourse) {
+    return (
+      <div className="container mx-auto p-6 space-y-6">
         <div className="flex items-center gap-3">
           <BookOpen className="h-8 w-8 text-primary" />
           <h1 className="text-3xl font-bold">Kurslarım</h1>
         </div>
-        <Button className="gap-2">
-          <Plus className="h-4 w-4" />
-          Yeni Ders Ekle
-        </Button>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {courses.map((course) => (
+            <Card key={course.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleCourseClick(course)}>
+              <CardHeader>
+                <CardTitle className="text-lg">{course.title}</CardTitle>
+                <p className="text-sm text-muted-foreground">{course.description}</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4 text-center">
+                  <div>
+                    <Clock className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+                    <p className="text-sm font-medium">{course.duration}</p>
+                    <p className="text-xs text-muted-foreground">Süre</p>
+                  </div>
+                  <div>
+                    <Users className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+                    <p className="text-sm font-medium">{course.ageGroup}</p>
+                    <p className="text-xs text-muted-foreground">Yaş Grubu</p>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <Badge variant="secondary">{course.level}</Badge>
+                </div>
+
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">Kurs Kodu</p>
+                  <p className="font-mono text-sm">{course.courseId}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
+    );
+  }
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          <div className="space-y-4">
-            {courses.map((course) => (
-              <Card key={course.id}>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    {course.title}
-                    <Badge variant={
-                      course.status === 'active' ? 'default' : 
-                      course.status === 'completed' ? 'secondary' : 'outline'
-                    }>
-                      {course.status}
-                    </Badge>
-                  </CardTitle>
-                  <p className="text-sm text-muted-foreground">{course.description}</p>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                      <Users className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                      <p className="text-sm font-medium">{course.students}</p>
-                      <p className="text-xs text-muted-foreground">Öğrenci</p>
-                    </div>
-                    <div>
-                      <Clock className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                      <p className="text-sm font-medium">{course.duration}</p>
-                      <p className="text-xs text-muted-foreground">Süre</p>
-                    </div>
-                    <div>
-                      <BookOpen className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                      <p className="text-sm font-medium">{course.difficulty}</p>
-                      <p className="text-xs text-muted-foreground">Seviye</p>
+  // Modül listesi görünümü
+  if (selectedCourse && !selectedModule) {
+    return (
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" onClick={handleBack}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <BookOpen className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">{selectedCourse.title}</h1>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Kurs Bilgileri</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Kurs Kodu</p>
+                <p className="font-mono">{selectedCourse.courseId}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Süre</p>
+                <p className="font-medium">{selectedCourse.duration}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Yaş Grubu</p>
+                <p className="font-medium">{selectedCourse.ageGroup}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Seviye</p>
+                <Badge variant="secondary">{selectedCourse.level}</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {selectedCourse.modules.map((module, index) => (
+            <Card key={module.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleModuleClick(module)}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                    M{index + 1}
+                  </span>
+                  {module.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Ders Sayısı</span>
+                    <span className="font-medium">{module.lessons.length} ders</span>
+                  </div>
+                  <Progress value={75} className="h-2" />
+                  <p className="text-xs text-muted-foreground">%75 tamamlandı</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Ders listesi görünümü
+  if (selectedCourse && selectedModule && !selectedLesson) {
+    return (
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" onClick={handleBack}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <BookOpen className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">{selectedModule.name}</h1>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Modül: {selectedModule.name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">
+              Bu modül {selectedModule.lessons.length} ders içermektedir.
+            </p>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {selectedModule.lessons.map((lesson, index) => (
+            <Card key={lesson.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleLessonClick(lesson)}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <span className="bg-accent text-accent-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                    {index + 1}
+                  </span>
+                  {lesson.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Etkinlikler</p>
+                    <div className="flex flex-wrap gap-1">
+                      {lesson.activities.map((activity, i) => (
+                        <Badge key={i} variant="outline" className="text-xs">
+                          {activity}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Ödev</p>
+                    <Badge variant="secondary">{lesson.homework}</Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Ders İlerlemesi</span>
-                      <span>{course.completedLessons}/{course.totalLessons}</span>
+  // Ders detay görünümü
+  if (selectedCourse && selectedModule && selectedLesson) {
+    return (
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" onClick={handleBack}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <Play className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">{selectedLesson.name}</h1>
+        </div>
+
+        <Tabs defaultValue="activities" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="activities">Etkinlikler</TabsTrigger>
+            <TabsTrigger value="homework">Ödev</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="activities" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="h-5 w-5" />
+                  Ders Etkinlikleri
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {selectedLesson.activities.map((activity, index) => (
+                    <div key={index} className="flex items-center gap-3 p-4 border rounded-lg">
+                      <div className="bg-primary/10 text-primary rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">{activity}</p>
+                        <p className="text-sm text-muted-foreground">Etkinlik süresi: 15-20 dakika</p>
+                      </div>
+                      <Badge variant="outline">Etkinlik</Badge>
                     </div>
-                    <Progress 
-                      value={(course.completedLessons / course.totalLessons) * 100} 
-                      className="h-2" 
-                    />
-                  </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-                  <div className="text-sm">
-                    <p className="text-muted-foreground">Sonraki Ders:</p>
-                    <p className="font-medium">{course.nextLesson}</p>
-                  </div>
-
+          <TabsContent value="homework" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Ev Ödevi
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="p-4 border rounded-lg">
+                  <h3 className="font-semibold mb-2">{selectedLesson.homework}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Bu ödev, derste öğrenilen konuları pekiştirmek için tasarlanmıştır.
+                  </p>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Eye className="h-4 w-4 mr-2" />
-                      Görüntüle
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Edit className="h-4 w-4 mr-2" />
-                      Düzenle
-                    </Button>
+                    <Badge variant="secondary">Bireysel Çalışma</Badge>
+                    <Badge variant="outline">Teslim: 1 Hafta</Badge>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Yaklaşan Dersler</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {upcomingLessons.map((lesson, index) => (
-                  <div key={index} className="border rounded-lg p-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-medium">{lesson.lesson}</h3>
-                      <Badge variant="outline">{lesson.students} öğrenci</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{lesson.course}</p>
-                    <p className="text-sm font-medium text-primary">{lesson.date}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Hızlı İstatistikler</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Toplam Öğrenci</span>
-                  <span className="font-bold">45</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Aktif Kurslar</span>
-                  <span className="font-bold">2</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Tamamlanan Kurslar</span>
-                  <span className="font-bold">1</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Bu Hafta Ders</span>
-                  <span className="font-bold">6</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return null;
 };
 
 export default TeacherCourses;
