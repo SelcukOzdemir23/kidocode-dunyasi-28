@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -40,9 +41,11 @@ interface Group {
   courseId: string;
   startDate: Date;
   studentCount: number;
+  whatsappLink?: string;
 }
 
 const TeamLeaderGroups = () => {
+  const navigate = useNavigate();
   const [groups, setGroups] = useState<Group[]>([
     { 
       id: 1, 
@@ -108,7 +111,8 @@ const TeamLeaderGroups = () => {
     teacherId: '',
     courseId: '',
     startDate: new Date(),
-    selectedStudents: [] as number[]
+    selectedStudents: [] as number[],
+    whatsappLink: ''
   });
 
   const handleAddGroup = () => {
@@ -134,7 +138,8 @@ const TeamLeaderGroups = () => {
         teacherId: '',
         courseId: '',
         startDate: new Date(),
-        selectedStudents: []
+        selectedStudents: [],
+        whatsappLink: ''
       });
       setIsAddDialogOpen(false);
     }
@@ -188,6 +193,16 @@ const TeamLeaderGroups = () => {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="TUR_PRE_2024_8-10_001"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="whatsappLink">WhatsApp Davet Bağlantısı</Label>
+                <Input
+                  id="whatsappLink"
+                  value={formData.whatsappLink || ''}
+                  onChange={(e) => setFormData({ ...formData, whatsappLink: e.target.value })}
+                  placeholder="https://chat.whatsapp.com/..."
                 />
               </div>
               
@@ -308,7 +323,7 @@ const TeamLeaderGroups = () => {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="flex-1">
+                <Button variant="outline" size="sm" className="flex-1" onClick={() => navigate(`/team-leader/groups/${group.id}`)}>
                   <Eye className="h-4 w-4 mr-2" />
                   Detaylar
                 </Button>
