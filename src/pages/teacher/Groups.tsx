@@ -1,55 +1,34 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Users, BookOpen, Calendar, Clock, Eye } from 'lucide-react';
+import { mockGroups, mockCourses, getCourseById, getGroupsByTeacher } from '@/data/mockData';
 
 const TeacherGroups = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   
-  const groups = [
-    {
-      id: 1,
-      name: 'TUR_PRE_8_PYTHON_2024',
-      courseName: 'Python Programlama',
-      studentCount: 12,
-      startDate: '2024-01-15',
-      endDate: '2024-03-15',
-      duration: '8 hafta',
-      ageGroup: '8-10 yaş',
-      status: 'active',
-      progress: 65,
-      nextLesson: 'Yarın 14:00'
-    },
-    {
-      id: 2,
-      name: 'TUR_BEG_10_SCRATCH_2024',
-      courseName: 'Scratch ile Oyun Geliştirme',
-      studentCount: 8,
-      startDate: '2024-02-01',
-      endDate: '2024-04-01',
-      duration: '8 hafta',
-      ageGroup: '10-12 yaş',
-      status: 'active',
-      progress: 40,
-      nextLesson: 'Perşembe 16:00'
-    },
-    {
-      id: 3,
-      name: 'TUR_ADV_12_WEB_2024',
-      courseName: 'Web Tasarım Temelleri',
-      studentCount: 15,
-      startDate: '2024-01-01',
-      endDate: '2024-02-28',
-      duration: '8 hafta',
-      ageGroup: '12-14 yaş',
-      status: 'completed',
-      progress: 100,
-      nextLesson: 'Tamamlandı'
-    }
-  ];
+  // Öğretmenin gruplarını al
+  const groups = getGroupsByTeacher(user?.id || '').map(group => {
+    const course = getCourseById(group.courseId);
+    return {
+      id: group.id,
+      name: group.name,
+      courseName: course?.name || 'Bilinmeyen Kurs',
+      studentCount: group.currentStudents,
+      startDate: group.startDate,
+      endDate: group.endDate,
+      duration: `${Math.ceil((new Date(group.endDate).getTime() - new Date(group.startDate).getTime()) / (1000 * 60 * 60 * 24 * 7))} hafta`,
+      ageGroup: course?.ageGroup || 'Bilinmeyen',
+      status: group.status,
+      progress: group.progress,
+      nextLesson: group.nextLesson || 'Planlanmamış'
+    };
+  });
 
   const handleGroupClick = (groupId: number) => {
     navigate(`/teacher/groups/${groupId}`);

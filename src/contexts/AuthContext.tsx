@@ -1,17 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
-type UserRole = 'admin' | 'team_leader' | 'student' | 'teacher';
-
-interface User {
-  id: string;
-  username: string;
-  fullName: string;
-  email: string;
-  role: UserRole;
-  avatar?: string;
-  classId?: string;
-  enrolledCourses?: string[];
-}
+import { User, mockUsers, demoCredentials } from '@/data/mockData';
 
 interface AuthContextType {
   user: User | null;
@@ -21,40 +9,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Demo kullanıcıları
-const demoUsers: User[] = [
-  {
-    id: '1',
-    username: 'admin',
-    fullName: 'Sistem Yöneticisi',
-    email: 'admin@kidocode.com',
-    role: 'admin'
-  },
-  {
-    id: '2',
-    username: 'takimlideri',
-    fullName: 'Mehmet Öztürk',
-    email: 'mehmet@kidocode.com',
-    role: 'team_leader'
-  },
-  {
-    id: '3',
-    username: 'ogrenci1',
-    fullName: 'Ayşe Yılmaz',
-    email: 'ayse@kidocode.com',
-    role: 'student',
-    classId: 'class-1',
-    enrolledCourses: ['python', 'scratch']
-  },
-  {
-    id: '4',
-    username: 'ogretmen1',
-    fullName: 'Fatma Kaya',
-    email: 'fatma@kidocode.com',
-    role: 'teacher'
-  }
-];
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -72,10 +26,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (username: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     
-    // Demo için basit giriş kontrolü
-    const foundUser = demoUsers.find(u => u.username === username);
+    // Demo kullanıcılarından kontrol et
+    const foundUser = mockUsers.find(u => u.username === username);
     
-    if (foundUser && password === '123456') {
+    // Şifre kontrolü
+    const isValidPassword = 
+      (username === demoCredentials.admin.username && password === demoCredentials.admin.password) ||
+      (username === demoCredentials.teamLeader.username && password === demoCredentials.teamLeader.password) ||
+      (username === demoCredentials.teacher.username && password === demoCredentials.teacher.password) ||
+      (username === demoCredentials.student.username && password === demoCredentials.student.password);
+    
+    if (foundUser && isValidPassword) {
       setUser(foundUser);
       localStorage.setItem('kidocode_user', JSON.stringify(foundUser));
       setIsLoading(false);

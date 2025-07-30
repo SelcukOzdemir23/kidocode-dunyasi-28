@@ -2,14 +2,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Users, UserPlus, Edit, Trash2 } from 'lucide-react';
+import { mockUsers } from '@/data/mockData';
 
 const AdminUsers = () => {
-  const users = [
-    { id: 1, name: 'Ayşe Yılmaz', email: 'ayse@kidocode.com', role: 'student', status: 'active' },
-    { id: 2, name: 'Mehmet Öztürk', email: 'mehmet@kidocode.com', role: 'team_leader', status: 'active' },
-    { id: 3, name: 'Fatma Kaya', email: 'fatma@kidocode.com', role: 'teacher', status: 'active' },
-    { id: 4, name: 'Ali Demir', email: 'ali@kidocode.com', role: 'student', status: 'inactive' },
-  ];
+  const users = mockUsers.map(user => ({
+    id: user.id,
+    name: user.fullName,
+    email: user.email,
+    role: user.role,
+    status: user.status
+  }));
 
   return (
     <div className="container mx-auto p-6 space-y-6">

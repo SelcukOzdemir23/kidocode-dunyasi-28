@@ -14,86 +14,87 @@ import {
   Target,
   Award
 } from 'lucide-react';
-import pythonIcon from '@/assets/python-icon.jpg';
-import webDevIcon from '@/assets/web-dev-icon.jpg';
-import designIcon from '@/assets/design-icon.jpg';
-import scratchIcon from '@/assets/scratch-icon.jpg';
-import koduIcon from '@/assets/kodu-icon.jpg';
-
-// Demo veri
-const enrolledCourses = [
-  {
-    id: 'python',
-    name: 'Python Programlama',
-    icon: pythonIcon,
-    progress: 75,
-    nextLesson: 'Döngüler ve Koşullar',
-    totalLessons: 20,
-    completedLessons: 15
-  },
-  {
-    id: 'scratch',
-    name: 'Scratch ile Oyun Yapımı',
-    icon: scratchIcon,
-    progress: 40,
-    nextLesson: 'Karakterler ve Kostümler',
-    totalLessons: 15,
-    completedLessons: 6
-  }
-];
-
-const availableCourses = [
-  {
-    id: 'web-dev',
-    name: 'Web Geliştirme',
-    description: 'HTML, CSS ve JavaScript ile web siteleri yapma',
-    icon: webDevIcon,
-    duration: '12 hafta',
-    level: 'Başlangıç'
-  },
-  {
-    id: 'design',
-    name: 'Dijital Tasarım',
-    description: 'GIMP ile grafik tasarım öğrenme',
-    icon: designIcon,
-    duration: '8 hafta',
-    level: 'Orta'
-  },
-  {
-    id: 'kodu',
-    name: 'Kodu Oyun Yapımı',
-    description: '3D oyunlar tasarlama ve kodlama',
-    icon: koduIcon,
-    duration: '10 hafta',
-    level: 'İleri'
-  }
-];
-
-const recentAssignments = [
-  {
-    id: 1,
-    title: 'Python Değişkenler Ödevi',
-    course: 'Python Programlama',
-    dueDate: '2024-02-15',
-    status: 'pending'
-  },
-  {
-    id: 2,
-    title: 'Scratch Karakter Animasyonu',
-    course: 'Scratch ile Oyun Yapımı',
-    dueDate: '2024-02-20',
-    status: 'completed'
-  }
-];
-
-const classRanking = {
-  position: 3,
-  totalStudents: 25,
-  points: 1250
-};
+import { 
+  mockCourses, 
+  mockGroups, 
+  mockAssignments, 
+  mockAchievements,
+  getCourseById,
+  getGroupsByTeacher,
+  getAssignmentsByTeacher,
+  getAchievementsByUser
+} from '@/data/mockData';
 
 const StudentDashboard = () => {
   const { user } = useAuth();
+
+  // Öğrencinin kayıtlı olduğu kursları al
+  const enrolledCourses = user?.enrolledCourses?.map(courseId => {
+    const course = getCourseById(courseId);
+    if (!course) return null;
+    
+    // Kursun gruplarını bul ve öğrencinin bulunduğu grubu bul
+    const studentGroups = mockGroups.filter(group => 
+      group.courseId === courseId && 
+      group.students.includes(user.id)
+    );
+    
+    const group = studentGroups[0]; // İlk grubu al (öğrenci bir kursa birden fazla grupta kayıtlı olmaz)
+    
+    return {
+      id: course.id,
+      name: course.name,
+      icon: course.icon,
+      progress: group?.progress || 0,
+      nextLesson: group?.nextLesson || 'Planlanmamış',
+      totalLessons: course.lessons.length,
+      completedLessons: course.lessons.filter(lesson => lesson.isCompleted).length
+    };
+  }).filter(Boolean) || [];
+
+  // Mevcut kurslar (öğrencinin kayıtlı olmadığı)
+  const availableCourses = mockCourses
+    .filter(course => !user?.enrolledCourses?.includes(course.id))
+    .slice(0, 3)
+    .map(course => ({
+      id: course.id,
+      name: course.name,
+      description: course.description,
+      icon: course.icon,
+      duration: `${course.duration} hafta`,
+      level: course.level === 'beginner' ? 'Başlangıç' : 
+             course.level === 'intermediate' ? 'Orta' : 'İleri'
+    }));
+
+  // Öğrencinin ödevlerini al
+  const recentAssignments = mockAssignments
+    .filter(assignment => {
+      // Öğrencinin kayıtlı olduğu gruplardaki ödevler
+      const studentGroups = mockGroups.filter(group => 
+        group.students.includes(user?.id || '')
+      );
+      return studentGroups.some(group => group.id === assignment.groupId);
+    })
+    .map(assignment => {
+      const course = getCourseById(assignment.courseId);
+      const submission = assignment.submissions.find(sub => sub.studentId === user?.id);
+      
+      return {
+        id: assignment.id,
+        title: assignment.title,
+        course: course?.name || 'Bilinmeyen Kurs',
+        dueDate: assignment.dueDate,
+        status: submission ? 'completed' : 'pending'
+      };
+    })
+    .slice(0, 3);
+
+  // Sınıf sıralaması (demo veri)
+  const classRanking = {
+    position: 3,
+    totalStudents: 25,
+    points: user?.points || 0
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -198,7 +199,9 @@ const StudentDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-accent">12</div>
+              <div className="text-2xl font-bold text-accent">
+                {getAchievementsByUser(user?.id || '').length}
+              </div>
               <p className="text-sm text-muted-foreground">Toplam Rozet</p>
               <Button variant="outline" size="sm" className="w-full mt-3">
                 Tümünü Gör
